@@ -98,25 +98,32 @@ if Config.DataHeists.Enabled then
                     local gps = vector2(coords.x, coords.y)
                     local players = Framework.GetPlayers()
 
-                    for i = 1, #players, 1 do
-                        local player = Framework.GetPlayerFromId(players[i])
+                    if Config.DataHeists.AlertType == "cuchi" then
+                        for i = 1, #players, 1 do
+                            local player = Framework.GetPlayerFromId(players[i])
 
-                        if player then
-                            for j = 1, #Config.DataHeists.JobsToCall, 1 do
-                                local jobName = ""
-                                if Config.Framework == "esx" then
-                                    jobName = player.job.name
-                                elseif Config.Framework == "qbcore" then
-                                    jobName = player.PlayerData.job.name
-                                end
+                            if player then
+                                for j = 1, #Config.DataHeists.JobsToCall, 1 do
+                                    local jobName = ""
+                                    if Config.Framework == "esx" then
+                                        jobName = player.job.name
+                                    elseif Config.Framework == "qbcore" then
+                                        jobName = player.PlayerData.job.name
+                                    end
 
-                                if jobName == Config.DataHeists.JobsToCall[j] then
-                                    TriggerClientEvent("ccmp:dataHeistCall", players[i], gps)
-                                    break
+                                    if jobName == Config.DataHeists.JobsToCall[j] then
+                                        TriggerClientEvent("ccmp:dataHeistCall", players[i], gps)
+                                        break
+                                    end
                                 end
                             end
                         end
-                    end
+
+                    elseif Config.DataHeists.AlertType == "ps-dispatch" then
+                        TriggerClientEvent("ccmp:dataHeistDispatch", -1)
+                        else
+                            print("Config.AlertType not configured")
+                        end
 
                     local netPath = "//".."breach-temp"..math.random(0, 100000).."/breached/data/dump-"..math.random(0, 100000)
                     breachPaths[netPath] = heistCoords
@@ -141,10 +148,19 @@ if Config.DataHeists.Enabled then
                     local player = Framework.GetPlayerFromId(id)
                     local reward = math.random(Config.DataHeists.Reward[1], Config.DataHeists.Reward[2])
 
-                    if Config.Framework == "esx" then
-                        player.addMoney(reward)
-                    elseif Config.Framework == "qbcore" then
-                        player.Functions.AddMoney("cash", reward)
+                    if Config.DataHeists.RewardType == "cash" then
+                        if Config.Framework == "esx" then
+                            player.addMoney(reward)
+                        elseif Config.Framework == "qbcore" then
+                            player.Functions.AddMoney("cash", reward)
+                        end
+                    elseif Config.DataHeists.RewardType == "crypto" then
+                        if Config.Framework == "esx" then
+                            --player.addMoney(reward)
+                            print("How do you add crypto in ESX? I dunno lol")
+                        elseif Config.Framework == "qbcore" then
+                            player.Functions.AddMoney("crypto", reward)
+                        end
                     end
 
                     cb(true, reward)

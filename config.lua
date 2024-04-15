@@ -3,8 +3,8 @@ Config = {}
 -- JOIN MY DISCORD: https://discord.gg/qvFmwj2a2T
 
 -- Shared
-Config.Framework = "esx" -- esx/qbcore
-Config.FrameworkResourceName = "es_extended" -- the framework resource name (e.g.: "es_extended" or "qb-core")
+Config.Framework = "qbcore" -- esx/qbcore
+Config.FrameworkResourceName = "qb-core" -- the framework resource name (e.g.: "es_extended" or "qb-core")
 Config.FrameworkOptionalExportName = "" -- if you changed the function's name to get the object, place the new here
 
 Config.Locale = "EN" -- EN/FR/ES/DA/DE
@@ -13,11 +13,13 @@ Config.UseItem = "laptop" -- set the item that will be used to display the inter
 
 Config.DataHeists = {
     Enabled = true,
-    DisplayArea = false, -- display area on the map
-    Reward = { 10000, 20000 }, -- random between [1] and [2]
+    DisplayArea = true, -- display area on the map
+    RewardType = "crypto", -- "cash" / "crypto"
+    Reward = { 1000, 2000 }, -- random between [1] and [2]
     TypeOfDelay = "each", -- "each": one delay for each area OR "all": one delay for all areas
-    Delay = 60, -- in minutes
-    JobsToCall = { "police", "sheriff" }, -- jobs to send call when a heist is triggered
+    Delay = 1, -- in minutes
+    AlertType = "ps-dispatch", -- "cuchi" for standalone alert, "ps-dispatch" for ps-dispatch alert (qb-core only)
+    JobsToCall = { "police", "sheriff" }, -- jobs to send standalone alert when a heist is triggered
     Areas = {
         --[coords as vector3] = areaRadius in meters
         -- fleeca
@@ -25,10 +27,14 @@ Config.DataHeists = {
         [vector3(314.23, -278.83, 54.17)] = 14,
         [vector3(-350.8, -49.57, 49.04)] = 14,
         [vector3(-1213.0, -330.39, 37.79)] = 14,
-        [vector3(246.64, 223.2, 106.29)] = 14,
+        [vector3(259.54, 220.71, 106.28)] = 27, -- pacific bank
+        [vector3(1175.91, 2706.80, 38.09)] = 14, -- harmony fleeca
 
         -- arcadius tower (area in parking)
-        [vector3(-160.274, -606.16, 32.424)] = 50
+        [vector3(-160.274, -606.16, 32.424)] = 50,
+
+        -- shopping centre bank
+        [vector3(-564.58, -586.43, 41.43)] = 14
     }
 }
 
@@ -131,12 +137,12 @@ else
         joaat("tr_prop_tr_monitor_01b"),
         joaat("sf_prop_sf_monitor_stu_01a")
     }
-    Config.TargetSystem = false -- if true then you must have ox_target or qb-target, if false prop interactions will be based on a zone check
-    Config.TargetType = "ox" -- "ox"/"qb" for ox_target or qb-target
+    Config.TargetSystem = true -- if true then you must have ox_target or qb-target, if false prop interactions will be based on a zone check
+    Config.TargetType = "qb" -- "ox"/"qb" for ox_target or qb-target
 
     Config.UsablePositions = { -- positions where players can open a computer free to use
-        vector3(1275.5, -1710.7, 54.8),
-        vector3(1272.3, -1711.6, 54.8),
+        --vector3(1275.5, -1710.7, 54.8),
+        --vector3(1272.3, -1711.6, 54.8),
     }
 
     CustomDrawMarker = function(coords)

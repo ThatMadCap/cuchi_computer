@@ -12,6 +12,7 @@ FiveM computers and laptops with features that are enriching roleplay on your se
 **Dependencies:** [oxmysql](https://github.com/overextended/oxmysql), [esx](https://github.com/esx-framework/esx_core) or [qb-core](https://github.com/qbcore-framework/qb-core) framework  
 **Optional dependencies:** 
  - [ox_target](https://github.com/overextended/ox_target) / [qb-target](https://github.com/qbcore-framework/qb-target): to be able to target props
+ - [ps-dispatch](https://github.com/Project-Sloth/ps-dispatch): for optional police alert (standalone police alert is included by default)
 
 1. Download the [latest version](https://github.com/Cu-chi/cuchi_cameraEditor/releases/latest/download/cuchi_computer.zip)
 2. Make sure to create all SQL tables (`tables.sql`)
@@ -60,6 +61,48 @@ Guides:
 [support discord](https://discord.gg/fvRFgRXkkx)  
 [ko-fi](https://ko-fi.com/M4M7W2F0B)  
 [twitter](https://twitter.com/cuch_i)  
+
+
+## ps-dispatch
+If you are using ps-dispatch for the police alert
+
+a) add the following to your ps-dispatch config.lua:
+```lua
+    -- Data Heist
+    ['dataheist'] = {
+        radius = 0,
+        sprite = 606,
+        color = 1,
+        scale = 1.5,
+        length = 3,
+        sound = 'Lose_1st',
+        sound2 = 'GTAO_FM_Events_Soundset',
+        offset = false,
+        flash = false
+    },
+```
+b) add the following to your ps-dispatch alerts.lua:
+```lua
+-- cuchi_computer
+local function DataHeist()
+    local coords = GetEntityCoords(cache.ped)
+
+    local dispatchData = {
+        message = 'Data Heist',
+        codeName = 'dataheist',
+        code = '10-78',
+        icon = 'fa-solid fa-computer',
+        priority = 1,
+        coords = coords,
+        street = GetStreetAndZone(coords),
+        alertTime = 10,
+        jobs = { 'leo' }
+    }
+
+    TriggerServerEvent('ps-dispatch:server:notify', dispatchData)
+end
+exports('DataHeist', DataHeist)
+```
 
 # License 📜
 cuchi_computer - FiveM computer resource  

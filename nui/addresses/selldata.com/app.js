@@ -30,10 +30,19 @@ document.addEventListener("selldata.com", () => {
         }).then(response => response.json()).then(data => {
             sellBtn.disabled = false;
 
-            if (data.ok)
-                MessageBox("info", "selldata.com", GetLocale("addr_selldata_sold").replace("{1}", data.reward));
-            else
+            // If 'crypto' then send addr_selldata_sold_crypto message ??
+            if (data.ok) {
+                if (data.crypto) {
+                    MessageBox("info", "selldata.com", GetLocale("addr_selldata_sold_crypto").replace("{1}", data.reward));
+                } else {
+                    MessageBox("info", "selldata.com", GetLocale("addr_selldata_sold").replace("{1}", data.reward));
+                }
+            } else {
                 MessageBox("error", "selldata.com", GetLocale("addr_selldata_bad"));
+            }
+        }).catch(error => {
+            console.error("Error:", error);
+            MessageBox("error", "selldata.com", GetLocale("addr_selldata_bad"));
         });
     };
 });

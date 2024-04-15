@@ -134,4 +134,5 @@ Locales["EN"] = {
     addr_selldata_sell: "Sell",
     addr_selldata_bad: "The data doesn't exist at this path or can't access to the path.",
     addr_selldata_sold: "Data sold for ${1}.",
+    addr_selldata_sold_crypto: "Data sold for {1} BTC",
 }

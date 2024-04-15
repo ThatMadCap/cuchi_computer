@@ -216,14 +216,15 @@ if Config.DataHeists.Enabled then
 
     RegisterNUICallback("sellData", function(data, cb)
         if curHeistCoords then
-            Framework.TriggerServerCallback("ccmp:dataHeistClaim", function(result, reward)
+            Framework.TriggerServerCallback("ccmp:dataHeistClaim", function(result, reward, crypto)
                 if result then
                     StopDataHeist()
                 end
 
                 cb({
                     ok = result,
-                    reward = reward
+                    reward = reward,
+                    crypto = crypto
                 })
             end, curHeistCoords, data.path)
         else
@@ -259,6 +260,12 @@ if Config.DataHeists.Enabled then
         SetNewWaypoint(gps.x, gps.y)
         CustomNotification(GetLocale("data_heist_call"))
     end)
+
+    RegisterNetEvent("ccmp:dataHeistDispatch", function()
+        --TODO: POSSIBLE TO SEND THE IP OF THE COMPUTER THAT THE PERSON IS USING TO THE DISPATCH ALERT?
+        print("exports['ps-dispatch']:DataHeist()")
+        exports['ps-dispatch']:DataHeist()
+      end)
 end
 
 local propsLength = #Config.UseProps
